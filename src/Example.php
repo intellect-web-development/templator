@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace IWD\Templator\Time;
+namespace IWD\Templator;
 
 class Example
 {
