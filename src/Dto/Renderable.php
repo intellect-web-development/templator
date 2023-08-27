@@ -8,6 +8,9 @@ readonly class Renderable
 {
     public function __construct(
         public string $template,
+        /**
+         * @var array<string,mixed>
+         */
         public array $variables = [],
     ) {
     }

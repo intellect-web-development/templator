@@ -11,9 +11,10 @@ class Renderer
     public function render(Renderable $renderable): string
     {
         $template = $renderable->template;
-
         foreach ($renderable->variables as $key => $value) {
-            $template = str_replace('{{ ' . $key . ' }}', $value, $template);
+            if (is_string($value)) {
+                $template = str_replace('{{ ' . $key . ' }}', $value, $template);
+            }
         }
 
         return $template;

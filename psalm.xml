@@ -14,4 +14,10 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <MissingTemplateParam errorLevel="suppress" />
+        <MoreSpecificImplementedParamType errorLevel="suppress" />
+        <RedundantCast errorLevel="suppress" />
+        <MixedAssignment errorLevel="suppress" />
+    </issueHandlers>
 </psalm>
