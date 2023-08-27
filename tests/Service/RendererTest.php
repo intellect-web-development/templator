@@ -14,7 +14,7 @@ class RendererTest extends TestCase
         $renderable = new Renderable(
             template: 'My first {{ variable }} content',
             variables: [
-                'variable' => 'rendered'
+                'variable' => 'rendered',
             ]
         );
         $renderer = new Renderer();
