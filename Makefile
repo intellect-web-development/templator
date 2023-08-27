@@ -8,3 +8,4 @@ analyze:
 	./vendor/bin/rector --dry-run
 	./vendor/bin/phpstan --memory-limit=-1
 	./vendor/bin/psalm --no-cache $(ARGS)
+	./vendor/bin/phpunit
