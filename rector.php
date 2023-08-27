@@ -6,7 +6,6 @@ use Rector\CodeQuality\Rector\Assign\CombinedAssignRector;
 use Rector\CodeQuality\Rector\BooleanNot\SimplifyDeMorganBinaryRector;
 use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
-use Rector\CodeQuality\Rector\ClassMethod\ReturnTypeFromStrictScalarReturnExprRector;
 use Rector\CodeQuality\Rector\Concat\JoinStringConcatRector;
 use Rector\CodeQuality\Rector\Empty_\SimplifyEmptyCheckOnEmptyArrayRector;
 use Rector\CodeQuality\Rector\Expression\InlineIfToExplicitIfRector;
@@ -31,7 +30,6 @@ use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
 use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
 use Rector\CodingStyle\Rector\FuncCall\StrictArraySearchRector;
 use Rector\CodingStyle\Rector\Plus\UseIncrementAssignRector;
-use Rector\CodingStyle\Rector\Property\NullifyUnionNullableRector;
 use Rector\CodingStyle\Rector\String_\SymplifyQuoteEscapeRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveDoubleAssignRector;
@@ -47,20 +45,10 @@ use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\DeadCode\Rector\TryCatch\RemoveDeadTryCatchRector;
-use Rector\Doctrine\Rector\Class_\InitializeDefaultEntityCollectionRector;
-use Rector\Doctrine\Rector\ClassMethod\MakeEntitySetterNullabilityInSyncWithPropertyRector;
-use Rector\Doctrine\Rector\Property\ChangeBigIntEntityPropertyToIntTypeRector;
-use Rector\Doctrine\Rector\Property\CorrectDefaultTypesOnEntityPropertyRector;
-use Rector\Doctrine\Rector\Property\ImproveDoctrineCollectionDocTypeInEntityRector;
-use Rector\Doctrine\Rector\Property\TypedPropertyFromColumnTypeRector;
-use Rector\Doctrine\Rector\Property\TypedPropertyFromDoctrineCollectionRector;
-use Rector\Doctrine\Rector\Property\TypedPropertyFromToManyRelationTypeRector;
-use Rector\Doctrine\Rector\Property\TypedPropertyFromToOneRelationTypeRector;
 use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
 use Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector;
 use Rector\Php53\Rector\Ternary\TernaryToElvisRector;
 use Rector\Php54\Rector\Array_\LongArrayToShortArrayRector;
-use Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector;
 use Rector\Php70\Rector\FuncCall\RandomFunctionRector;
 use Rector\Php70\Rector\If_\IfToSpaceshipRector;
 use Rector\Php70\Rector\MethodCall\ThisCallOnStaticMethodToStaticCallRector;
@@ -123,7 +111,6 @@ return static function (RectorConfig $rectorConfig): void {
         IntvalToTypeCastRector::class,
         IssetOnPropertyObjectToPropertyExistsRector::class,
         JoinStringConcatRector::class,
-        ReturnTypeFromStrictScalarReturnExprRector::class,
         ShortenElseIfRector::class,
         SimplifyConditionsRector::class,
         SimplifyDeMorganBinaryRector::class,
@@ -135,7 +122,6 @@ return static function (RectorConfig $rectorConfig): void {
         CatchExceptionNameMatchingTypeRector::class,
         CountArrayToEmptyArrayComparisonRector::class,
         DataProviderArrayItemsNewlinedRector::class,
-        NullifyUnionNullableRector::class,
         StaticArrowFunctionRector::class,
         StrictArraySearchRector::class,
         SymplifyQuoteEscapeRector::class,
@@ -158,7 +144,6 @@ return static function (RectorConfig $rectorConfig): void {
         ReturnEarlyIfVariableRector::class,
         TernaryToElvisRector::class,
         LongArrayToShortArrayRector::class,
-        AddDefaultValueForUndefinedVariableRector::class,
         IfIssetToCoalescingRector::class,
         IfToSpaceshipRector::class,
         RandomFunctionRector::class,
@@ -197,16 +182,6 @@ return static function (RectorConfig $rectorConfig): void {
         SimpleFunctionAndFilterRector::class,
         SimplifyFormRenderingRector::class,
         StringFormTypeToClassRector::class,
-        // Doctrine:
-        ChangeBigIntEntityPropertyToIntTypeRector::class,
-        CorrectDefaultTypesOnEntityPropertyRector::class,
-        ImproveDoctrineCollectionDocTypeInEntityRector::class,
-        InitializeDefaultEntityCollectionRector::class,
-        MakeEntitySetterNullabilityInSyncWithPropertyRector::class,
-        TypedPropertyFromColumnTypeRector::class,
-        TypedPropertyFromDoctrineCollectionRector::class,
-        TypedPropertyFromToManyRelationTypeRector::class,
-        TypedPropertyFromToOneRelationTypeRector::class,
     ]);
 
     // define sets of rules

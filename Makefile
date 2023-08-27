@@ -1,5 +1,6 @@
 linter-autofix:
 	./vendor/bin/php-cs-fixer fix -v --using-cache=no
+	./vendor/bin/rector
 
 analyze:
 	./vendor/bin/phplint
