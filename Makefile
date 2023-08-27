@@ -15,19 +15,19 @@ up: docker-up
 down: docker-down
 
 composer-install:
-	docker compose run --rm app-php-fpm composer install
+	docker compose run --rm php-fpm composer install
 
 composer-dump:
-	docker compose run --rm app-php-fpm composer dump-autoload
+	docker compose run --rm php-fpm composer dump-autoload
 
 composer-update:
-	docker compose run --rm app-php-fpm composer update
+	docker compose run --rm php-fpm composer update
 
 composer-outdated:
-	docker compose run --rm app-php-fpm composer outdated
+	docker compose run --rm php-fpm composer outdated
 
 composer-dry-run:
-	docker compose run --rm app-php-fpm composer update --dry-run
+	docker compose run --rm php-fpm composer update --dry-run
 
 docker-up:
 	docker compose up -d
