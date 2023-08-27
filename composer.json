@@ -1,0 +1,33 @@
+{
+    "name": "intellect-web-development/templator",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Erin",
+            "role": "Maintainer"
+        }
+    ],
+    "description": "Library for render template",
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.3",
+        "phpstan/phpstan": "^1.10",
+        "vimeo/psalm": "^5.15",
+        "overtrue/phplint": "^9.0",
+        "friendsofphp/php-cs-fixer": "^3.23",
+        "rector/rector": "^0.18.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IWD\\Templator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IWD\\Templator\\": "tests/"
+        }
+    }
+}
