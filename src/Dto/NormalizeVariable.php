@@ -9,6 +9,8 @@ class NormalizeVariable
     public readonly string $raw;
     public readonly string $regular;
     public readonly string $targetVariable;
+    public readonly string $rootTargetVariable;
+    public readonly string $withoutRootTargetVariable;
     public readonly array $filters;
 
     public function __construct(
@@ -16,8 +18,11 @@ class NormalizeVariable
     ) {
         $this->raw = $raw;
         $this->regular = trim(str_replace(' ', '', $raw), '{} ');
-        $explode = explode('|', $this->regular);
-        $this->targetVariable = array_shift($explode);
-        $this->filters = $explode;
+        $explodeRegular = explode('|', $this->regular);
+        $this->targetVariable = (string) array_shift($explodeRegular);
+        $this->filters = $explodeRegular;
+        $targetVariableExplode = explode('.', $this->targetVariable);
+        $this->rootTargetVariable = (string) array_shift($targetVariableExplode);
+        $this->withoutRootTargetVariable = implode('.', $targetVariableExplode);
     }
 }

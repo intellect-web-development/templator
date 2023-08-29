@@ -40,10 +40,10 @@ class RendererTest extends TestCase
     {
         $renderable = new Renderable(
             template: <<<TEXT
-            **** {{f.name | classify}} **** {{ a | tablize | pluralize  }} **** {{b | tablize}}  **** {{ c}} **** [{ }] **** {{}}
-            TEXT,
+                **** {{f.name | classify}} **** {{ a | tablize | pluralize  }} **** {{b | tablize}}  **** {{ c}} **** [{ }] **** {{}}
+                TEXT,
             variables: [
-                'f.name' => new class () {
+                'f' => new class () {
                     public string $name = 'F_NAME';
                 },
                 'a' => 'AAAA',
@@ -52,7 +52,7 @@ class RendererTest extends TestCase
             ]
         );
 
-        $expected = 'My first rendered content';
+        $expected = '**** F_NAME **** AAAA **** BBBB  **** CCCC **** [{ }] **** {{}}';
 
         self::assertSame(
             $expected,
@@ -102,6 +102,7 @@ class RendererTest extends TestCase
             variables: [
                 'obj' => new class () {
                     public string $name = 'Alexander';
+                    //todo: тут встроенный объект еще добавить, и обратиться к его атрибуту
                 },
             ]
         );
@@ -117,15 +118,18 @@ class RendererTest extends TestCase
     public function testArrayRender(): void
     {
         $renderable = new Renderable(
-            template: 'My name is {{ obj.name }}!',
+            template: 'My name is {{ obj.name.first }} {{ obj.name.last }}!',
             variables: [
                 'obj' => [
-                    'name' => 'Alexander',
+                    'name' => [
+                        'first' => 'Ivan',
+                        'last' => 'Petrov',
+                    ],
                 ],
             ]
         );
 
-        $expected = 'My name is Alexander!';
+        $expected = 'My name is Ivan Petrov!';
 
         self::assertSame(
             $expected,

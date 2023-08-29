@@ -42,14 +42,25 @@ class Renderer
         $template = $renderable->template;
         foreach ($normalizeVariables as $variable) {
             $variableValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->targetVariable}]");
-
+            if (null === $variableValue) {
+                $variableValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->rootTargetVariable}]");
+            }
             if (is_object($variableValue)) {
-                $withoutRootVariable = explode('.', $variable->targetVariable);
-                array_shift($withoutRootVariable);
-
                 $template = str_replace(
                     $variable->raw,
-                    (string) $this->propertyAccessor->getValue($variableValue, implode('.', $withoutRootVariable)),
+                    (string) $this->propertyAccessor->getValue($variableValue, $variable->withoutRootTargetVariable),
+                    $template
+                );
+            }
+            if (is_array($variableValue)) {
+                var_dump(
+                    $variableValue,
+                    $variable->withoutRootTargetVariable,
+                    $this->propertyAccessor->getValue($variableValue, "[$variable->withoutRootTargetVariable]"),
+                );exit;
+                $template = str_replace(
+                    $variable->raw,
+                    (string) $this->propertyAccessor->getValue($variableValue, $variable->withoutRootTargetVariable),
                     $template
                 );
             }
