@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace IWD\Templator\Service;
 
+use Adbar\Dot;
 use IWD\Templator\Dto\Renderable;
 use IWD\Templator\Dto\NormalizeVariable;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -26,19 +27,6 @@ class Renderer
             $normalizeVariables[] = new NormalizeVariable($match);
         }
 
-        //todo: с массивами синтаксис такой. С объектами просто через точку. В случае, когда работаем с массивом
-        // - всегда надо преоброазовывать к [aa][bb] (в нашем случае всегда, ибо мы передаем ТОЛЬКО массив в Renderable)
-//        $arr = [
-//            'aa' => [
-//                'bb' => 'cc',
-//            ],
-//        ];
-//        var_dump(
-//            $this->propertyAccessor->getValue($arr, '[aa][bb]')
-//        );
-        //        var_dump($normalizeVariables);
-        //        exit;
-
         $template = $renderable->template;
         foreach ($normalizeVariables as $variable) {
             $variableValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->targetVariable}]");
@@ -53,14 +41,10 @@ class Renderer
                 );
             }
             if (is_array($variableValue)) {
-                var_dump(
-                    $variableValue,
-                    $variable->withoutRootTargetVariable,
-                    $this->propertyAccessor->getValue($variableValue, "[$variable->withoutRootTargetVariable]"),
-                );exit;
+                $dotVariableValue = new Dot($variableValue, true);
                 $template = str_replace(
                     $variable->raw,
-                    (string) $this->propertyAccessor->getValue($variableValue, $variable->withoutRootTargetVariable),
+                    (string) $dotVariableValue[$variable->withoutRootTargetVariable],
                     $template
                 );
             }
