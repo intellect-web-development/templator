@@ -22,44 +22,42 @@ class Renderer
     {
         $normalizeVariables = [];
         preg_match_all('/{{(.+?)}}/', $renderable->template, $matches);
-        foreach ($matches[0] as $raw) {
-            $normalizeVariables[] = new NormalizeVariable($raw);
+        foreach ($matches[0] as $match) {
+            $normalizeVariables[] = new NormalizeVariable($match);
         }
 
         //todo: с массивами синтаксис такой. С объектами просто через точку. В случае, когда работаем с массивом
         // - всегда надо преоброазовывать к [aa][bb] (в нашем случае всегда, ибо мы передаем ТОЛЬКО массив в Renderable)
-        $arr = [
-            'aa' => [
-                'bb' => 'cc',
-            ],
-        ];
-        var_dump(
-            $this->propertyAccessor->getValue($arr, '[aa][bb]')
-        );
+//        $arr = [
+//            'aa' => [
+//                'bb' => 'cc',
+//            ],
+//        ];
+//        var_dump(
+//            $this->propertyAccessor->getValue($arr, '[aa][bb]')
+//        );
         //        var_dump($normalizeVariables);
         //        exit;
 
         $template = $renderable->template;
         foreach ($normalizeVariables as $variable) {
-            //            var_dump(
-            //                $variable->targetVariable,
-            //                $renderable->variables,
-            //                $this->propertyAccessor->getValue($renderable->variables, $variable->targetVariable)
-            //            );
-            //            var_dump($renderable->variables, $variable);
-            exit;
-            //            if (is_string($value)) {
-            //                $template = str_replace('{{ ' . $key . ' }}', $value, $template);
-            //            }
-            //            if (is_object($value)) {
-            //                $template = str_replace('{{ ' . $key . ' }}', $this->propertyAccessor->getValue($value, $key), $template);
-            //            }
-            //            if (is_array($value)) {
-            //                $template = str_replace('{{ ' . $key . ' }}', $value[$key], $template);
-            //            }
+            $variableValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->targetVariable}]");
+
+            if (is_object($variableValue)) {
+                $withoutRootVariable = explode('.', $variable->targetVariable);
+                array_shift($withoutRootVariable);
+
+                $template = str_replace(
+                    $variable->raw,
+                    (string) $this->propertyAccessor->getValue($variableValue, implode('.', $withoutRootVariable)),
+                    $template
+                );
+            }
+            if (is_string($variableValue) || is_numeric($variableValue)) {
+                $template = str_replace($variable->raw, (string) $variableValue, $template);
+            }
         }
-        //
-        //        return $template;
-        return '';
+
+        return $template;
     }
 }

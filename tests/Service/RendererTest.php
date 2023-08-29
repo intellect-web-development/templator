@@ -40,12 +40,15 @@ class RendererTest extends TestCase
     {
         $renderable = new Renderable(
             template: <<<TEXT
-            ASdniond {{ a | tablize | pluralize  }} wefni {{b.name | tablize}}  djqdjq {{ c}} f466wef [{ }] wd {{}}
+            **** {{f.name | classify}} **** {{ a | tablize | pluralize  }} **** {{b | tablize}}  **** {{ c}} **** [{ }] **** {{}}
             TEXT,
             variables: [
-                'a' => '!',
-                'b' => '*',
-                'c' => '+',
+                'f.name' => new class () {
+                    public string $name = 'F_NAME';
+                },
+                'a' => 'AAAA',
+                'b' => 'BBBB',
+                'c' => 'CCCC',
             ]
         );
 
