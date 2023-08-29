@@ -12,7 +12,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class Renderer
 {
-    private PropertyAccessor $propertyAccessor;
+    private readonly PropertyAccessor $propertyAccessor;
 
     public function __construct()
     {
@@ -69,6 +69,7 @@ class Renderer
                 'constantize', 'const' => Inflector::constantize($resultValue),
                 'pluralize', 'plural' => Inflector::pluralize($resultValue),
                 'singularize', 'singular' => Inflector::singularize($resultValue),
+                default => $resultValue,
             };
         }
 

@@ -8,7 +8,7 @@ use IWD\Templator\Service\Renderer;
 
 class Renderable
 {
-    private static Renderer $renderer;
+    private static ?Renderer $renderer;
 
     public function __construct(
         public readonly string $template,
@@ -28,6 +28,6 @@ class Renderable
      */
     public function render(): string
     {
-        return self::$renderer->render($this);
+        return self::$renderer?->render($this) ?? '';
     }
 }
