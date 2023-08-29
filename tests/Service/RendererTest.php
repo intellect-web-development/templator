@@ -156,4 +156,21 @@ class RendererTest extends TestCase
             self::$renderer->render($renderable)
         );
     }
+
+    public function testTwoFilters(): void
+    {
+        $renderable = new Renderable(
+            template: '{{a | pluralize | classify}}',
+            variables: [
+                'a' => 'person',
+            ]
+        );
+
+        $expected = 'People';
+
+        self::assertSame(
+            $expected,
+            self::$renderer->render($renderable)
+        );
+    }
 }

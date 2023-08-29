@@ -58,18 +58,17 @@ class Renderer
     private function applyFilters(string $value, array $filters): string
     {
         $resultValue = $value;
-        var_dump($filters);exit; //todo: второй фильтр почему-то не срабатываает
         foreach ($filters as $filter) {
             $resultValue = match ($filter) {
-                'urlize' => Inflector::urlize($value),
-                'camelize' => Inflector::camelize($value),
-                'classify' => Inflector::classify($value),
-                'tableize' => Inflector::tableize($value),
-                'kebab' => Inflector::kebab($value),
-                'capitalize' => Inflector::capitalize($value),
-                'constantize' => Inflector::constantize($value),
-                'pluralize' => Inflector::pluralize($value),
-                'singularize' => Inflector::singularize($value),
+                'urlize' => Inflector::urlize($resultValue),
+                'camelize' => Inflector::camelize($resultValue),
+                'classify' => Inflector::classify($resultValue),
+                'tableize' => Inflector::tableize($resultValue),
+                'kebab' => Inflector::kebab($resultValue),
+                'capitalize' => Inflector::capitalize($resultValue),
+                'constantize' => Inflector::constantize($resultValue),
+                'pluralize' => Inflector::pluralize($resultValue),
+                'singularize' => Inflector::singularize($resultValue),
             };
         }
 
