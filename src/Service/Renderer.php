@@ -60,15 +60,15 @@ class Renderer
         $resultValue = $value;
         foreach ($filters as $filter) {
             $resultValue = match ($filter) {
-                'urlize' => Inflector::urlize($resultValue),
-                'camelize' => Inflector::camelize($resultValue),
-                'classify' => Inflector::classify($resultValue),
-                'tableize' => Inflector::tableize($resultValue),
-                'kebab' => Inflector::kebab($resultValue),
-                'capitalize' => Inflector::capitalize($resultValue),
-                'constantize' => Inflector::constantize($resultValue),
-                'pluralize' => Inflector::pluralize($resultValue),
-                'singularize' => Inflector::singularize($resultValue),
+                'urlize', 'url' => Inflector::urlize($resultValue),
+                'camelize', 'camel' => Inflector::camelize($resultValue),
+                'classify', 'class' => Inflector::classify($resultValue),
+                'tableize', 'table' => Inflector::tableize($resultValue),
+                'kebabize', 'kebab' => Inflector::kebab($resultValue),
+                'capitalize', 'capital' => Inflector::capitalize($resultValue),
+                'constantize', 'const' => Inflector::constantize($resultValue),
+                'pluralize', 'plural' => Inflector::pluralize($resultValue),
+                'singularize', 'singular' => Inflector::singularize($resultValue),
             };
         }
 

@@ -40,7 +40,7 @@ class RendererTest extends TestCase
     {
         $renderable = new Renderable(
             template: <<<TEXT
-                **** {{f.name | classify}} **** {{ a | tablize | pluralize  }} **** {{b | tablize}}  **** {{ c}} **** [{ }] **** {{}}
+                **** {{f.name | classify}} **** {{ a | tableize | pluralize  }} **** {{b | tableize}}  **** {{ c}} **** [{ }] **** {{}}
                 TEXT,
             variables: [
                 'f' => new class () {
@@ -52,7 +52,7 @@ class RendererTest extends TestCase
             ]
         );
 
-        $expected = '**** F_NAME **** AAAA **** BBBB  **** CCCC **** [{ }] **** {{}}';
+        $expected = '**** FNAME **** a_a_a_as **** b_b_b_b  **** CCCC **** [{ }] **** {{}}';
 
         self::assertSame(
             $expected,
@@ -102,12 +102,38 @@ class RendererTest extends TestCase
             variables: [
                 'obj' => new class () {
                     public string $name = 'Alexander';
-                    //todo: тут встроенный объект еще добавить, и обратиться к его атрибуту
                 },
             ]
         );
 
         $expected = 'My name is Alexander!';
+
+        self::assertSame(
+            $expected,
+            self::$renderer->render($renderable)
+        );
+    }
+
+    public function testObjectAnonymousNestedRender(): void
+    {
+        $renderable = new Renderable(
+            template: 'My name is {{ obj.name.first }} {{ obj.name.last }}!',
+            variables: [
+                'obj' => new class () {
+                    public object $name;
+
+                    public function __construct()
+                    {
+                        $this->name = new class () {
+                            public string $first = 'Alexander';
+                            public string $last = 'Shaman';
+                        };
+                    }
+                },
+            ]
+        );
+
+        $expected = 'My name is Alexander Shaman!';
 
         self::assertSame(
             $expected,
