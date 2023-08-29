@@ -29,30 +29,50 @@ class Renderer
 
         $template = $renderable->template;
         foreach ($normalizeVariables as $variable) {
-            $variableValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->targetVariable}]");
-            if (null === $variableValue) {
-                $variableValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->rootTargetVariable}]");
+            $targetValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->targetVariable}]");
+            if (null === $targetValue) {
+                $targetValue = $this->propertyAccessor->getValue($renderable->variables, "[{$variable->rootTargetVariable}]");
             }
-            if (is_object($variableValue)) {
-                $template = str_replace(
-                    $variable->raw,
-                    (string) $this->propertyAccessor->getValue($variableValue, $variable->withoutRootTargetVariable),
-                    $template
-                );
+
+            if (is_object($targetValue)) {
+                $preparedTargetValue = (string) $this->propertyAccessor->getValue($targetValue, $variable->withoutRootTargetVariable);
+                $preparedTargetValue = $this->applyFilters($preparedTargetValue, $variable->filters);
+                $template = str_replace($variable->raw, $preparedTargetValue, $template);
             }
-            if (is_array($variableValue)) {
-                $dotVariableValue = new Dot($variableValue, true);
-                $template = str_replace(
-                    $variable->raw,
-                    (string) $dotVariableValue[$variable->withoutRootTargetVariable],
-                    $template
-                );
+            if (is_array($targetValue)) {
+                $dotVariableValue = new Dot($targetValue, true);
+                $preparedTargetValue = (string) $dotVariableValue[$variable->withoutRootTargetVariable];
+                $preparedTargetValue = $this->applyFilters($preparedTargetValue, $variable->filters);
+                $template = str_replace($variable->raw, $preparedTargetValue, $template);
             }
-            if (is_string($variableValue) || is_numeric($variableValue)) {
-                $template = str_replace($variable->raw, (string) $variableValue, $template);
+            if (is_string($targetValue) || is_numeric($targetValue)) {
+                $preparedTargetValue = (string) $targetValue;
+                $preparedTargetValue = $this->applyFilters($preparedTargetValue, $variable->filters);
+                $template = str_replace($variable->raw, $preparedTargetValue, $template);
             }
         }
 
         return $template;
+    }
+
+    private function applyFilters(string $value, array $filters): string
+    {
+        $resultValue = $value;
+        var_dump($filters);exit; //todo: второй фильтр почему-то не срабатываает
+        foreach ($filters as $filter) {
+            $resultValue = match ($filter) {
+                'urlize' => Inflector::urlize($value),
+                'camelize' => Inflector::camelize($value),
+                'classify' => Inflector::classify($value),
+                'tableize' => Inflector::tableize($value),
+                'kebab' => Inflector::kebab($value),
+                'capitalize' => Inflector::capitalize($value),
+                'constantize' => Inflector::constantize($value),
+                'pluralize' => Inflector::pluralize($value),
+                'singularize' => Inflector::singularize($value),
+            };
+        }
+
+        return $resultValue;
     }
 }

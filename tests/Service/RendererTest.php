@@ -118,18 +118,38 @@ class RendererTest extends TestCase
     public function testArrayRender(): void
     {
         $renderable = new Renderable(
-            template: 'My name is {{ obj.name.first }} {{ obj.name.last }}!',
+            template: 'My name is {{ obj.name.first | classify }} {{ obj.name.last | classify }}!',
             variables: [
                 'obj' => [
                     'name' => [
-                        'first' => 'Ivan',
-                        'last' => 'Petrov',
+                        'first' => 'ivan',
+                        'last' => 'petrov',
                     ],
                 ],
             ]
         );
 
         $expected = 'My name is Ivan Petrov!';
+
+        self::assertSame(
+            $expected,
+            self::$renderer->render($renderable)
+        );
+    }
+
+    public function testInflectorCases(): void
+    {
+        $renderable = new Renderable(
+            template: '{{a | classify}} {{b | constantize}}, {{c | pluralize | classify}} {{d | pluralize}}',
+            variables: [
+                'a' => 'hello',
+                'b' => 'world',
+                'c' => 'summer',
+                'd' => 'day',
+            ]
+        );
+
+        $expected = 'Hello WORLD, Summers days';
 
         self::assertSame(
             $expected,
